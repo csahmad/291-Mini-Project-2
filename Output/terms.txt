@@ -1,85 +1,105 @@
-t-@joerogan
-t-Played
-t-as
-t-Joe
-t-Savage
-t-Rogan
-t-in
-t-Undisputed3
-t-Career
-t-mode,
-t-won
-t-Pride
-t-GP,
-t-got
-t-UFC
-t-title
-t-shot
-t-against
-t-Shields,
-t-lost
-t-3
-t-times,
-t-and
-t-retired
-t-Cat
-t-and
-t-Metronome:
-t-http://t.co/3Z7Aq8Dn
-t-@svennnni
-t-Savage!
-t-I
-t-usually
-t-don't
-t-get
-t-too
-t-excited
-t-about
-t-tech
-t-stuff,
-t-but
-t-I
-t-can't
-t-wait
-t-for
-t-the
-t-16th.
-t-"Resolutionary"
-t-...
-t-@HjaltiKarlsson
-t-Karlsson
-t-hress?
-t-@addininja
-t-"Hnuss,
-t-Siri
-t-ekki
-t-á
-t-íslensku,
-t-afhverju
-t-ætti
-t-ég
-t-að
-t-kaupa
-t-þetta?"
-t-sudo
-t-nano
-t-/etc/hosts127.0.0.1
-t-http://t.co/q4Uzm2vQ
-t-11
-t-Octrillion!
-t-@fitbit
-t-Why
-t-is
-t-the
-t-iPhone
-t-app
-t-not
-t-available
-t-on
-t-the
-t-iTunes
-t-store
-t-in
-t-Germany?
-t-Want
-t-it.
+t-@joerogan:000000010
+t-played:000000010
+t-as:000000010
+t-joe:000000010
+t-savage:000000010
+t-rogan:000000010
+t-in:000000010
+t-undisputed3:000000010
+t-career:000000010
+t-mode,:000000010
+t-won:000000010
+t-pride:000000010
+t-gp,:000000010
+t-got:000000010
+t-ufc:000000010
+t-title:000000010
+t-shot:000000010
+t-against:000000010
+t-shields,:000000010
+t-lost:000000010
+t-3:000000010
+t-times,:000000010
+t-and:000000010
+t-retired:000000010
+n-Siggi Eggertsson:000000010
+l-Berlin, Germany:000000010
+t-cat:000000011
+t-and:000000011
+t-metronome::000000011
+t-http://t.co/3z7aq8dn:000000011
+n-Siggi Eggertsson:000000011
+l-Berlin, Germany:000000011
+t-@svennnni:000000012
+t-savage!:000000012
+n-Siggi Eggertsson:000000012
+l-Berlin, Germany:000000012
+t-i:000000013
+t-usually:000000013
+t-don't:000000013
+t-get:000000013
+t-too:000000013
+t-excited:000000013
+t-about:000000013
+t-tech:000000013
+t-stuff,:000000013
+t-but:000000013
+t-i:000000013
+t-can't:000000013
+t-wait:000000013
+t-for:000000013
+t-the:000000013
+t-16th.:000000013
+n-Siggi Eggertsson:000000013
+l-Berlin, Germany:000000013
+t-"resolutionary":000000014
+t-...:000000014
+n-Siggi Eggertsson:000000014
+l-Berlin, Germany:000000014
+t-@hjaltikarlsson:000000015
+t-karlsson:000000015
+t-hress?:000000015
+n-Siggi Eggertsson:000000015
+l-Berlin, Germany:000000015
+t-@addininja:000000016
+t-"hnuss,:000000016
+t-siri:000000016
+t-ekki:000000016
+t-á:000000016
+t-íslensku,:000000016
+t-afhverju:000000016
+t-ætti:000000016
+t-ég:000000016
+t-að:000000016
+t-kaupa:000000016
+t-þetta?":000000016
+n-Siggi Eggertsson:000000016
+l-Berlin, Germany:000000016
+t-sudo:000000017
+t-nano:000000017
+t-/etc/hosts127.0.0.1:000000017
+t-http://t.co/q4uzm2vq:000000017
+n-Siggi Eggertsson:000000017
+l-Berlin, Germany:000000017
+t-11:000000018
+t-octrillion!:000000018
+n-Siggi Eggertsson:000000018
+l-Berlin, Germany:000000018
+t-@fitbit:000000019
+t-why:000000019
+t-is:000000019
+t-the:000000019
+t-iphone:000000019
+t-app:000000019
+t-not:000000019
+t-available:000000019
+t-on:000000019
+t-the:000000019
+t-itunes:000000019
+t-store:000000019
+t-in:000000019
+t-germany?:000000019
+t-want:000000019
+t-it.:000000019
+n-Siggi Eggertsson:000000019
+l-Berlin, Germany:000000019
