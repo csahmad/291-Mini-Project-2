@@ -1,0 +1,10 @@
+# Run the program
+
+declare -a FILES=("terms.txt" "dates.txt" "tweets.txt")
+
+for file in "${FILES[@]}"
+do
+	temp=../Output/$file.temp
+	sort -u ../Output/$file > $temp
+	mv $temp ../Output/$file
+done
