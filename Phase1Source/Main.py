@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 import sys
 import os
-import fileinput
 
 class Main:
     """Run the program"""
@@ -13,15 +12,16 @@ class Main:
     @staticmethod
     def writeTermToFile(file, terms, tid):
         for i in terms:
-            file.write('t-{0}:{1}\r\n'.format(i.lower(),tid))
+            if len(i) > 2:
+                file.write('t-{0}:{1}\r\n'.format(i.lower(),tid))
 
     @staticmethod
     def writeUNameToFile(file, uname, tid):
-        file.write('n-{0}:{1}\r\n'.format(uname,tid))
+        file.write('n-{0}:{1}\r\n'.format(uname.lower(),tid))
 
     @staticmethod
     def writeULocationToFile(file, ulocation, tid):
-        file.write('l-{0}:{1}\r\n'.format(ulocation,tid))
+        file.write('l-{0}:{1}\r\n'.format(ulocation.lower(),tid))
 
     @staticmethod
     def writeDateToFile(file, date, tid):
@@ -63,10 +63,11 @@ class Main:
         f3 = open('../Output/tweets.txt', 'w')
         
 
-        for line in fileinput.input():
+        for line in sys.stdin:
             if line.startswith("<status>"):
                 print(line)
                 Main.xmlParser(f1, f2, f3, line)
+
         f1.close()
         f2.close()
         f3.close()
