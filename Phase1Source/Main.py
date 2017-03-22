@@ -15,24 +15,19 @@ class Main:
     def writeTermsToFile(file, terms, tid):
         """reads a list and writes each item to a file"""
         for i in terms:
-            m = re.search('[0-9a-zA-Z_]+', i)
-            if m != None:
-                term = m.group(0)
-                if len(term) > 2:
-                    file.write('t-{0}:{1}\r\n'.format(term.lower(),tid))
+            Main.writeTermToFile(file,"t",i,tid)
 
     @staticmethod
     def writeTermToFile(file, intype, string, tid):
         """writes the name or the location to file"""
-        m = re.search('\w+', string)
+        m = re.sub('[^0-9a-zA-Z_]','', string)
         if m != None:
-            name = m.group(0)
-            if len(name) > 2:
-                file.write('{0}-{1}:{2}\r\n'.format(intype,string.lower(),tid))
+            if len(m) > 2:
+                file.write('{0}-{1}:{2}\r\n'.format(intype,m.lower(),tid))
 
     @staticmethod
     def writeToFile(file, string, tid):
-        """writes the while tweet or the date and writes it to file"""
+        """writes the whole tweet or the date and writes it to file"""
         file.write('{0}:{1}\r\n'.format(string,tid))
 
     @staticmethod
@@ -49,7 +44,7 @@ class Main:
                 Main.writeToFile(ftweets, child.text, tid)
                 parsedText = Main.readText(child.text)
                 Main.writeTermsToFile(fterms, parsedText, tid)
-                
+
             if child.tag == "user":
                 for grandchild in child:
                     if grandchild.tag == "name":
