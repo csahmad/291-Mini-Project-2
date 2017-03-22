@@ -13,7 +13,7 @@ class Main:
     @staticmethod
     def writeTermsToFile(file, terms, tid):
         for i in terms:
-            m = re.search('\w+', i)
+            m = re.search('[0-9a-zA-Z_]+', i)
             if m != None:
                 term = m.group(0)
                 if len(term) > 2:
