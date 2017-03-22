@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import sys
 import os
+import re
 
 class Main:
     """Run the program"""
@@ -12,8 +13,11 @@ class Main:
     @staticmethod
     def writeTermToFile(file, terms, tid):
         for i in terms:
-            if len(i) > 2:
-                file.write('t-{0}:{1}\r\n'.format(i.lower(),tid))
+            m = re.search('[0-9a-zA-Z_]+', i)
+            if m != None:
+                term = m.group(0)
+                if len(term) > 2:
+                    file.write('t-{0}:{1}\r\n'.format(term.lower(),tid))
 
     @staticmethod
     def writeUNameToFile(file, uname, tid):
@@ -53,7 +57,7 @@ class Main:
             if child.tag == "created_at":
                 Main.writeDateToFile(fdates, child.text, tid)
 
-            print(child.tag, child.text)
+            # print(child.tag, child.text)
 
     @staticmethod
     def main():
@@ -65,7 +69,7 @@ class Main:
 
         for line in sys.stdin:
             if line.startswith("<status>"):
-                print(line)
+                # print(line)
                 Main.xmlParser(f1, f2, f3, line)
 
         f1.close()
