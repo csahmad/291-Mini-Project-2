@@ -1,7 +1,7 @@
-SOURCE_FOLDERS = Phase*Source
-
 tar:
 	tar -czf prj2code.tgz *
 
 clean:
-	make clean -C $(SOURCE_FOLDERS)
+	@make clean -C Phase1Source
+	@make clean -C Phase2Source
+	@make clean -C Phase3Source
