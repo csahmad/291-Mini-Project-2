@@ -5,11 +5,11 @@ Group work policy
 
 You will be doing this project with one other partner from the 291 class. Your group information from mini-project 1 is copied to mini-project 2 groups page on the assumption that you would be working in the same group. If you decide to change groups, please notify the instructor. It is assumed that both group members contribute somewhat equally to the project, hence they would receive the same mark. In case of difficulties within a group and when a partner is not lifting his/her weight, make sure to document all your contributions. If there is a break-up, each group member will get credit only for his/her portion of the work completed (losing the mark for any work either not completed or completed by the partner). For the same reason, a break-up should be your last resort.
 
-#Task
+# Task
 
 You are given a data file, which you will use to construct your indices. Here is a small data file with only 10 records and here is one with 1000 records. The data includes tweets from the twitter network; each tweet record consists of an id, a date when the tweet is posted, the tweet text, and name, location, description and url of the poster. The records are formatted in xml and have a start tag <status> and and an end tag </status>; each record has a newline character at the end. Fields inside records are also formatted similarly with respective tags. Your job is to create indices, following Phases 1 and 2, and use those indices to process the queries in Phases 3.
 
-#Phase 1: Preparing Data Files
+# Phase 1: Preparing Data Files
 
 Write a program that reads tweets records in an xml format from standard input and produces 3 files as follows:
 
@@ -21,13 +21,13 @@ tweets.txt: This file includes one line for each tweet in the form of I:rec wher
 
 These files can also be found at directory~drafiei/291/pub on the lab machines. In the same directory, you would also find larger size files (with 10k records) that you may want to use in the testings of your programs.
 
-#Phase 2: Building Indexes
+# Phase 2: Building Indexes
 
 Sort the files built in Phase 1 using the Linux sort command; pass the right option to the sort command to keep only the unique rows (see the man page for sort). You can keep the sorted data under the same file names or pass sorted records to stdout so they can be piped to your loading program (as described next). Suppose the sorted files are named as before (to simplify our presentation here). Given the sorted files terms.txt, dates.txt and tweets.txt, create the following three indexes: (1) a hash index on tweets.txt with tweet ids as keys and the full tweet record as data, (2) a B+-tree index on terms.txt with terms as keys and tweet ids as data, (3) a B+-tree index on dates.txt with dates as keys and tweet ids as data. You should note that the keys in all three cases are the character strings before colon ':' and the data is everything that comes after the colon. Use the db_load command to build your indexes. db_load by default expects keys in one line and data in the next line. Also db_load treats backslash as a special character and you want to avoid backslash in your input. Here is a simple Perl script that converts input records into what db_load expects and also removes backslashes. Your program for Phase 2 would produces three indexes which should be named tw.idx, te.idx and da.idx respectively corresponding to indexes 1, 2, and 3, as discussed above.
 
 In addition to db_load, you may also find db_dump with option p useful as you are building and testing the correctness of your indexes.
 
-#Phase 3: Data Retrieval
+# Phase 3: Data Retrieval
 
 Given the index files tw.idx, te.idx, and da.idx created in Phase 2 respectively on tweet ids, terms and dates, write a program that processes queries as follows. Each query returns the full record of the matching tweets, with record id first, followed by the rest of the fields formatted for output display, which should be readable and not in xml. Here are some examples of queries:
 
@@ -44,14 +44,14 @@ The first query returns all record that have german in their tweet text; similar
 
 More formally, each query defines some conditions that must be satisfied by text, name, location and created_at fields of the matching records. A condition can be either an exact match or a partial match; for simplicity, partial matches are restricted to prefix matches only (i.e. the wild card % can only appear at the end of a term). All matches are case-insensitive, hence the queries "German", "german", "gErman" would retrieve the same results; for the same reason the extracted terms in previous phases are all stored in lowercase. Matches on dates can be exact (as in query 6) or range searches (as in queries 7 and 8). Matches on terms can be exact (as in queries 1-4) or partial (as in query 5). A query can have multiple conditions (as in query 9) in which case the result must match all those conditions. Here is a grammar for the queries.
 
-#Testing
+# Testing
 
 At demo time, your code will be tested under a TA account. You will be given the name of a data file, and will be asked (1) to prepare terms.txt, dates.txt, tweets.txt, (2) build Berkeley DB indexes tw.idx, te.idx and da.idx, and (3) provide a query interface, which will allow us to test your system for Phase 3. We typically follow a 5 minutes rule, meaning that you are expected to prepare the data and build your indices in Phases 1 and 2 in less than 5 minutes; if not, you may lose marks and we may have to use our own indexes, in which case you would lose the whole mark for Phases 1 and 2.
 The demo will be run using the source code submitted and nothing else. Make sure your submission includes every file that is needed. There will be a limited time for each demo. Every group will book a time slot convenient to all group members to demo their projects. At demo time, all group members must be present. The TA will be asking you to perform various tasks and show how your application is handling each task. A mark will be assigned to your demo on the spot after the testing.
 
 Important note:You can make no assumption on the size of the input file (and any of the files and indexes that are built from the input file). We will be using a relatively large file for testing and you don't want your program to break down in our tests, resulting in a poor mark! That said, you can make very few assumptions (such as the inverted list of a term can fit in main memory) and state them in your report.
 
-#Instructions for Submissions
+# Instructions for Submissions
 
 Your submission includes (1) the source code for phases 1, 2 and 3 and any makefile or script that you may need to compile your code, and (2) a short report. Your source code must include at least three programs, i.e. one for each phase. Your program for Phase 3 would implement a simple query interface either in your favorite programming language (e.g. Python, C or C++, Java). For phases 1 and 2, you can have more than one program (for example, in Python, C or C++, Java, Perl) and can make use of any Unix command and scripting language (e.g. Perl, bash) that runs under Linux on lab machines, as long as you clearly document in your report how and in what sequence the programs or commands should run. The source code is submitted as follows:
 
