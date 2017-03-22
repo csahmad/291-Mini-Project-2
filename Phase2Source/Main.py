@@ -1,3 +1,7 @@
+TWEET_INDEX = "tw.idx"
+TERMS_INDEX = "te.idx"
+DATES_INDEX = "da.idx"
+
 class Main:
 	"""Run the program"""
 
