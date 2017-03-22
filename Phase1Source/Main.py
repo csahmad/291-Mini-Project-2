@@ -11,29 +11,25 @@ class Main:
         return text.split()
     
     @staticmethod
-    def writeTermToFile(file, terms, tid):
+    def writeTermsToFile(file, terms, tid):
         for i in terms:
-            m = re.search('[0-9a-zA-Z_]+', i)
+            m = re.search('\w+', i)
             if m != None:
                 term = m.group(0)
                 if len(term) > 2:
                     file.write('t-{0}:{1}\r\n'.format(term.lower(),tid))
 
     @staticmethod
-    def writeUNameToFile(file, uname, tid):
-        file.write('n-{0}:{1}\r\n'.format(uname.lower(),tid))
+    def writeTermToFile(file, intype, string, tid):
+        m = re.search('\w+', string)
+        if m != None:
+            name = m.group(0)
+            if len(name) > 2:
+                file.write('{0}-{1}:{2}\r\n'.format(intype,string.lower(),tid))
 
     @staticmethod
-    def writeULocationToFile(file, ulocation, tid):
-        file.write('l-{0}:{1}\r\n'.format(ulocation.lower(),tid))
-
-    @staticmethod
-    def writeDateToFile(file, date, tid):
+    def writeToFile(file, date, tid):
         file.write('{0}:{1}\r\n'.format(date,tid))
-
-    @staticmethod
-    def writeTweetToFile(file, tweet, tid):
-        file.write('{0}:{1}\r\n'.format(tid,tweet))
 
     @staticmethod
     def xmlParser(fterms, fdates, ftweets, line):
@@ -44,18 +40,18 @@ class Main:
             if child.tag == "id":
                 tid = child.text
             if child.tag == "text":
-                Main.writeTweetToFile(ftweets, child.text, tid)
+                Main.writeToFile(ftweets, child.text, tid)
                 parsedText = Main.readText(child.text)
-                Main.writeTermToFile(fterms, parsedText, tid)
+                Main.writeTermsToFile(fterms, parsedText, tid)
             if child.tag == "user":
                 for grandchild in child:
                     if grandchild.tag == "name":
-                        Main.writeUNameToFile(fterms, grandchild.text, tid)
+                        Main.writeTermToFile(fterms,"n", grandchild.text, tid)
                     if grandchild.tag == "location":
-                        Main.writeULocationToFile(fterms, grandchild.text, tid)
+                        Main.writeTermToFile(fterms,"l", grandchild.text, tid)
             
             if child.tag == "created_at":
-                Main.writeDateToFile(fdates, child.text, tid)
+                Main.writeToFile(fdates, child.text, tid)
 
             # print(child.tag, child.text)
 
