@@ -4,6 +4,8 @@ MAIN=Main
 PYTHON=python3
 CLEAN="true"
 
+./sort
+
 # If no arguments given, pass $MAIN to $PYTHON
 if [ $# -eq 0 ]
 then
@@ -13,8 +15,6 @@ then
 else
     $PYTHON $@
 fi
-
-./sort
 
 # If we should clean...
 if [ $CLEAN = "true" ]
