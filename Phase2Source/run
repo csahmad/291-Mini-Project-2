@@ -1,29 +1,15 @@
 # Run the program
 
-MAIN=Main
-PYTHON=python3
-CLEAN="true"
+OUTPUT_FOLDER=../Output
 
-./sort
+sort -u "$OUTPUT_FOLDER/tweets.txt" | \
+perl break.pl | \
+db_load -T -t hash "$OUTPUT_FOLDER/tw.idx"
 
-# If no arguments given, pass $MAIN to $PYTHON
-if [ $# -eq 0 ]
-then
-    $PYTHON $MAIN.py
+sort -u "$OUTPUT_FOLDER/terms.txt" | \
+perl break.pl | \
+db_load -T -t btree "$OUTPUT_FOLDER/te.idx"
 
-# Otherwise, pass the given arguments to $PYTHON
-else
-    $PYTHON $@
-fi
-
-# If we should clean...
-if [ $CLEAN = "true" ]
-then
-
-	# If there is a makefile, run "make clean" (obviously fails if there is no
-	# "clean" in the makefile)
-	if [ -f Makefile ] || [ -f makefile ] || [ -f MAKEFILE ] || [ -f MakeFile ]
-	then
-	    make clean
-	fi
-fi
+sort -u "$OUTPUT_FOLDER/dates.txt" | \
+perl break.pl | \
+db_load -T -t hash "$OUTPUT_FOLDER/da.idx"

@@ -3,6 +3,8 @@
 declare -a SOURCE_FOLDERS=(Phase1Source Phase2Source Phase3Source)
 CLEAN="true"
 
+rm Output/*
+
 for folder in "${SOURCE_FOLDERS[@]}"
 do
 	cd $folder
