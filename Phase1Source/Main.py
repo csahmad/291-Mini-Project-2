@@ -20,10 +20,11 @@ class Main:
     @staticmethod
     def writeTermToFile(file, intype, string, tid):
         """writes the name or the location to file"""
-        m = re.sub('[^0-9a-zA-Z_]','', string)
-        if m != None:
-            if len(m) > 2:
-                file.write('{0}-{1}:{2}\r\n'.format(intype,m.lower(),tid))
+        if string != None:
+            m = re.sub('[^0-9a-zA-Z_]','', string)
+            if m != None:
+                if len(m) > 2:
+                    file.write('{0}-{1}:{2}\r\n'.format(intype,m.lower(),tid))
 
     @staticmethod
     def writeToFile(file, string, tid):
