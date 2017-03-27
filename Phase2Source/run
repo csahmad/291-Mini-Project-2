@@ -4,12 +4,12 @@ OUTPUT_FOLDER=../Output
 
 sort -u "$OUTPUT_FOLDER/tweets.txt" | \
 perl break.pl | \
-db_load -T -t hash "$OUTPUT_FOLDER/tw.idx"
+db_load -c duplicates=1 -T -t hash "$OUTPUT_FOLDER/tw.idx"
 
 sort -u "$OUTPUT_FOLDER/terms.txt" | \
 perl break.pl | \
-db_load -T -t btree "$OUTPUT_FOLDER/te.idx"
+db_load -c duplicates=1 -T -t btree "$OUTPUT_FOLDER/te.idx"
 
 sort -u "$OUTPUT_FOLDER/dates.txt" | \
 perl break.pl | \
-db_load -T -t hash "$OUTPUT_FOLDER/da.idx"
+db_load -c duplicates=1 -T -t hash "$OUTPUT_FOLDER/da.idx"
