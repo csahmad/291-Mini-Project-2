@@ -31,15 +31,16 @@ In addition to db_load, you may also find db_dump with option p useful as you ar
 
 Given the index files tw.idx, te.idx, and da.idx created in Phase 2 respectively on tweet ids, terms and dates, write a program that processes queries as follows. Each query returns the full record of the matching tweets, with record id first, followed by the rest of the fields formatted for output display, which should be readable and not in xml. Here are some examples of queries:
 
-text:german
-name:german
-location:german
-german
-text:german%
-date:2011/01/01
-date>2011/01/01
-date<2011/01/01
-text:german date>2011/01/01
+1. text:german
+2. name:german
+3. location:german
+4. german
+5. text:german%
+6. date:2011/01/01
+7. date>2011/01/01
+8. date<2011/01/01
+9. text:german date>2011/01/01
+
 The first query returns all record that have german in their tweet text; similarly the second and the third queries return all records that have the term in their name and location fields respectively. The fourth query returns all records that have the term in tweet text, name or location fields. The fifth query returns all records that have a term starting with german in their tweet text. The sixth, seventh and eight queries respectively return tweet records that are created on, after, and before 2011/01/01. The ninth query returns all records that have the term german in tweet text and the tweet record is created after 2011/01/01.
 
 More formally, each query defines some conditions that must be satisfied by text, name, location and created_at fields of the matching records. A condition can be either an exact match or a partial match; for simplicity, partial matches are restricted to prefix matches only (i.e. the wild card % can only appear at the end of a term). All matches are case-insensitive, hence the queries "German", "german", "gErman" would retrieve the same results; for the same reason the extracted terms in previous phases are all stored in lowercase. Matches on dates can be exact (as in query 6) or range searches (as in queries 7 and 8). Matches on terms can be exact (as in queries 1-4) or partial (as in query 5). A query can have multiple conditions (as in query 9) in which case the result must match all those conditions. Here is a grammar for the queries.
