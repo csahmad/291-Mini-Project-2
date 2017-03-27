@@ -45,7 +45,7 @@ class Main:
                 tid = child.text
 
             if child.tag == "text":
-                Main.writeToFile2(ftweets, child.text, tid)
+                Main.writeToFile2(ftweets, tid, child.text)
                 parsedText = Main.readText(child.text)
                 Main.writeTermsToFile(fterms, parsedText, tid)
 
