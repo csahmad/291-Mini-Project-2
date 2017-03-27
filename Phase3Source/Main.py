@@ -15,8 +15,10 @@ class Main:
 		tweetsCursor = tweetsDatabase.cursor()
 
 		firstIndex = tweetsCursor.first()
-		print(firstIndex)
-		#firstTweet = I
+		firstTweet = firstIndex[0].decode("utf-8")
+		firstTweetLocation = firstIndex[1].decode("utf-8")
+		print(firstTweet)
+		print(firstTweetLocation)
 
 		tweetsCursor.close()
 		tweetsDatabase.close()
