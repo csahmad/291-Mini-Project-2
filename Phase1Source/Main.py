@@ -15,25 +15,28 @@ class Main:
     def writeTermsToFile(file, terms, tid):
         """reads a list and writes each item to a file"""
         for i in terms:
-            Main.writeTermToFile(file,"t",i,tid)
+            Main.writeToFile1(file,"t",i,tid)
 
     @staticmethod
-    def writeTermToFile(file, intype, string, tid):
-        """writes the name or the location to file"""
-        if string != None:
-            m = re.sub('[^0-9a-zA-Z_]','', string)
+    def writeToFile1(file, intype, arg1, arg2):
+        """ writes to file in dash-colon format
+            intype-arg1:arg2 """
+        if arg1 != None:
+            m = re.sub('[^0-9a-zA-Z_]+','', arg1)
             if m != None:
                 if len(m) > 2:
-                    file.write('{0}-{1}:{2}\r\n'.format(intype,m.lower(),tid))
+                    file.write('{0}-{1}:{2}\r\n'.format(intype,m.lower(),arg2))
 
     @staticmethod
-    def writeToFile(file, string, tid):
-        """writes the whole tweet or the date and writes it to file"""
-        file.write('{0}:{1}\r\n'.format(string,tid))
+    def writeToFile2(file, arg1, arg2):
+        """ writes to file in colon format
+            arg1 : arg2 """
+        file.write('{0}:{1}\r\n'.format(arg1,arg2))
 
     @staticmethod
     def xmlParser(fterms, fdates, ftweets, line):
-        """parses each status in the xml file"""        
+        """ parses each status in the xml file
+            assumes each status is one line """        
         root = ET.fromstring(line)
         # print(root.tag)
         for child in root:
@@ -42,19 +45,19 @@ class Main:
                 tid = child.text
 
             if child.tag == "text":
-                Main.writeToFile(ftweets, child.text, tid)
+                Main.writeToFile2(ftweets, child.text, tid)
                 parsedText = Main.readText(child.text)
                 Main.writeTermsToFile(fterms, parsedText, tid)
 
             if child.tag == "user":
                 for grandchild in child:
                     if grandchild.tag == "name":
-                        Main.writeTermToFile(fterms,"n", grandchild.text, tid)
+                        Main.writeToFile1(fterms,"n", grandchild.text, tid)
                     if grandchild.tag == "location":
-                        Main.writeTermToFile(fterms,"l", grandchild.text, tid)
+                        Main.writeToFile1(fterms,"l", grandchild.text, tid)
             
             if child.tag == "created_at":
-                Main.writeToFile(fdates, child.text, tid)
+                Main.writeToFile2(fdates, child.text, tid)
 
             # print(child.tag, child.text)
 
