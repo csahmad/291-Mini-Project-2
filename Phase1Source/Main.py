@@ -39,13 +39,14 @@ class Main:
             assumes each status is one line """        
         root = ET.fromstring(line)
         # print(root.tag)
+        
         for child in root:
             # f = open ('terms.txt')
             if child.tag == "id":
                 tid = child.text
+                Main.writeToFile2(ftweets, tid, line)
 
             if child.tag == "text":
-                Main.writeToFile2(ftweets, tid, child.text)
                 parsedText = Main.readText(child.text)
                 Main.writeTermsToFile(fterms, parsedText, tid)
 
