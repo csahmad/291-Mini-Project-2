@@ -24,5 +24,19 @@ class TestQueryComponent(unittest.TestCase):
 		component = QueryComponent("german", QueryOperator.GREATER_THAN)
 		self.assertEqual(component.operator, QueryOperator.GREATER_THAN)
 
+	def test_eq(self):
+
+		a = QueryComponent("german", QueryOperator.EQUALS)
+		b = QueryComponent("german", QueryOperator.EQUALS)
+		self.assertEqual(a, b)
+
+		a = QueryComponent("germa", QueryOperator.EQUALS)
+		b = QueryComponent("german", QueryOperator.EQUALS)
+		self.assertNotEqual(a, b)
+
+		a = QueryComponent("german", QueryOperator.EQUALS)
+		b = QueryComponent("german", QueryOperator.LESS_THAN)
+		self.assertNotEqual(a, b)
+
 if __name__ == '__main__':
     unittest.main()
