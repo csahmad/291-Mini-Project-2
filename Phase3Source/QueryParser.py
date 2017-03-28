@@ -64,7 +64,7 @@ class QueryParser:
 		if match is None:
 
 			raise ValueError('Missing operator ({0}) in "{1}"'.format(
-				",".join(QueryParser._OPERATORS), componentString))
+				", ".join(QueryParser._OPERATORS), componentString))
 
 		operatorString = match.group()
 		kind = componentString[:match.start()].lower()
