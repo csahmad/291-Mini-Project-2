@@ -154,7 +154,21 @@ class TestQueryParser(unittest.TestCase):
 
 	def test_parse(self):
 
+		string = "text:hey"
+		result = QueryParser.parse(string)
+		expected = Query(
+			[QueryComponent("hey", QueryOperator.EQUALS)],
+			[],
+			[])
+		self.assertEqual(result, expected)
+
 		pass
+
+		with self.assertRaises(ValueError):
+			QueryParser.parse("")
+
+		with self.assertRaises(ValueError):
+			QueryParser.parse(" ")
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,6 +14,14 @@ class Query:
 		self._startsWith = startsWith
 		self._dates = dates
 
+	def __eq__(self, other):
+
+		if not isinstance(other, Query): return False
+
+		return self._exactTerms == other.exactTerms and \
+			self._startsWith == other.startsWith and \
+			self._dates == other.dates
+
 	@property
 	def exactTerms(self):
 

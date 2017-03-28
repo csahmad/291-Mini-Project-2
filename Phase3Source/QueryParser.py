@@ -37,6 +37,11 @@ class QueryParser:
 		queryString -- the query string to be parsed
 		"""
 
+		queryString = queryString.strip()
+
+		if queryString == "":
+			raise ValueError("Query cannot be empty.")
+
 		componentStrings = re.split(QueryParser._SEPARATOR, queryString)
 		exactTerms = []
 		startsWith = []
