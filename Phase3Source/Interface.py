@@ -18,6 +18,7 @@ class Interface:
 
 		except ValueError as e:
 			print(e)
+			return None
 
 if __name__ == "__main__":
 
