@@ -18,7 +18,7 @@ class QueryParser:
 
 	_OPERATOR = "|".join(_OPERATORS)
 
-	_TERM = "text"
+	_TERMS = ["text", "name", "location"]
 	_DATE = "date"
 
 	_WILDCARD = "%"
@@ -81,18 +81,18 @@ class QueryParser:
 		else:
 			raise RuntimeError("I should not be here.")
 
-		if kind == QueryParser._TERM:
+		if kind in QueryParser._TERMS:
 
 			if QueryParser._hasWildcard(value):
 				value = QueryParser._removeWildcard(value)
-				terms.append(QueryComponent(value, operator, False))
+				terms.append(QueryComponent(kind, value, operator, False))
 
 			else:
-				terms.append(QueryComponent(value, operator))
+				terms.append(QueryComponent(kind, value, operator))
 
 		elif kind == QueryParser._DATE:
 			QueryParser._validateDate(value)
-			dates.append(QueryComponent(value, operator))
+			dates.append(QueryComponent(kind, value, operator))
 
 		else:
 			raise ValueError('"{0}" is not valid.'.format(kind))

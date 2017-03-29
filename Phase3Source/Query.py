@@ -4,9 +4,7 @@ class Query:
 	def __init__(self, terms, dates):
 		"""
 		Arguments:
-		exactTerms -- exact terms (ignoring case) as a list of QueryComponent
-			objects
-		startsWith -- term prefixes as a list of QueryComponent objects
+		terms -- terms as a list of QueryComponent objects
 		dates -- dates as a list of QueryComponent objects
 		"""
 
