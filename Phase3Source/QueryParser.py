@@ -43,20 +43,19 @@ class QueryParser:
 			raise ValueError("Query cannot be empty.")
 
 		componentStrings = re.split(QueryParser._SEPARATOR, queryString)
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 
 		for string in componentStrings:
-			QueryParser._addComponent(string, exactTerms, startsWith, dates)
+			QueryParser._addComponent(string, terms, dates)
 
-		return Query(exactTerms, startsWith, dates)
+		return Query(terms, dates)
 
 	@staticmethod
-	def _addComponent(componentString, exactTerms, startsWith, dates):
+	def _addComponent(componentString, terms, dates):
 		"""
 		Add a QueryComponent (parsed from componentString) to the appropriate
-		list (exactTerms, startsWith, or dates)
+		list (terms or dates)
 		"""
 
 		match = re.search(QueryParser._OPERATOR, componentString)
@@ -86,10 +85,10 @@ class QueryParser:
 
 			if QueryParser._hasWildcard(value):
 				value = QueryParser._removeWildcard(value)
-				startsWith.append(QueryComponent(value, operator))
+				terms.append(QueryComponent(value, operator, False))
 
 			else:
-				exactTerms.append(QueryComponent(value, operator))
+				terms.append(QueryComponent(value, operator))
 
 		elif kind == QueryParser._DATE:
 			QueryParser._validateDate(value)

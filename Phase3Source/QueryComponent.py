@@ -3,15 +3,18 @@ from QueryOperator import QueryOperator
 class QueryComponent:
 	"""A component of a query as contained in a Query object"""
 
-	def __init__(self, value, operator):
+	def __init__(self, value, operator, isExactMatch = True):
 		"""
 		Arguments:
 		value -- the value (term or date) (eg. "german" or "2011/01/01")
 		operator -- the QueryOperator
+		isExactMatch -- whether the value represents an exact match (does not
+			represent a prefix match)
 		"""
 
 		self._value = value
 		self._operator = operator
+		self._isExactMatch = isExactMatch
 
 	def __str__(self):
 
@@ -27,12 +30,18 @@ class QueryComponent:
 		else:
 			raise RuntimeError("I should not be here.")
 
-		return operator + self._value
+		combined = operator + self._value
+
+		if (self._isExactMatch): return combined
+		return combined + "%"
 
 	def __eq__(self, other):
 
 		if not isinstance(other, QueryComponent): return False
-		return self._value == other.value and self._operator == other.operator
+
+		return self._value == other.value and \
+			self._operator == other.operator and \
+			self._isExactMatch == other.isExactMatch
 
 	@property
 	def value(self):
@@ -43,3 +52,8 @@ class QueryComponent:
 	def operator(self):
 
 		return self._operator
+
+	@property
+	def isExactMatch(self):
+
+		return self._isExactMatch
