@@ -76,7 +76,13 @@ class Main:
     @staticmethod
     def searchDates(date, cur, operator):
         ids = []
+        print("all dates")
+        first = cur.first()
+        while first:
+            print(first)
+            first = cur.next()
 
+        print("*************")
         if operator == QueryOperator.GREATER_THAN:
             iter = cur.set_range(str.encode(date))
             while iter:
@@ -84,9 +90,17 @@ class Main:
                 iter = cur.next()
 
         elif operator == QueryOperator.LESS_THAN:
+            bound = cur.set_range(str.encode(date))[0]
+            print("bound: ")
+            print(bound)
             iter = cur.first()
-            while iter[0].decode("utf-8") != date:
+           
+            while iter:
+                if iter[0] == bound:
+                    print("********FOUND")
+                    break
                 ids.append(iter[1].decode("utf-8"))
+                iter = cur.next()
 
         elif operator == QueryOperator.EQUALS:
             ids = Main.searchTerms(date, cur)
@@ -143,7 +157,6 @@ class Main:
             for i in dates:
                 print(i.operator)
                 ids = Main.searchDates(i.value, da_cur, i.operator)
-
                 tweets = Main.searchTweets(ids, tw_db)
                 if tweets != []:
                     for i in tweets:
