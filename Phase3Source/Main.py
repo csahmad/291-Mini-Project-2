@@ -45,6 +45,12 @@ class Main:
                 
             print(key)
 
+            firstIndex = twe_cur.first()
+            firstTweet = firstIndex[1]
+            firstTweetLocation = firstIndex[0]
+            print(firstTweet.decode("utf-8"))
+            print(firstTweetLocation.decode("utf-8"))
+
         Main.closeConnection(te_db, te_cur)
         Main.closeConnection(da_db, da_cur)
         Main.closeConnection(tw_db, tw_cur)
