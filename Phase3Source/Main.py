@@ -1,34 +1,53 @@
 from bsddb3 import db
+from Interface import *
 
 OUTPUT_FOLDER = "../Output/"
 
 class Main:
-	"""Run the program"""
+    """Run the program"""
 
-	@staticmethod
-	def main():
-		"""Run the program"""
+    @staticmethod
+    def startConnection(idx):
+        """returns the database and cursor"""
+        database = db.DB()
+        database.open(idx)
+        cur = database.cursor()
+        return database, cur
 
-		tweetsIndex = OUTPUT_FOLDER + "tw.idx"
-		tweetsDatabase = db.DB()
-		tweetsDatabase.open(tweetsIndex, db.DB_HASH, db.DB_CREATE)
-		tweetsCursor = tweetsDatabase.cursor()
+    @staticmethod
+    def closeConnection(database, cursor):
+        database.close()
+        cursor.close()
+        
+    @staticmethod
+    def getInput():
+        query = Interface.readAndParse()
+        return query.terms, query.dates
 
-		datesIndex = OUTPUT_FOLDER + "da.idx"
-		datesDatabase = db.DB()
-		datesDatabase.open(datesIndex, db.DB_HASH, db.DB_CREATE)
-		datesCursor = datesDatabase.cursor()
+    @staticmethod
+    def main():
+        """Run the program"""
+        (te_db, te_cur) = Main.startConnection(OUTPUT_FOLDER + "te.idx")
+        (da_db, da_cur) = Main.startConnection(OUTPUT_FOLDER + "da.idx")
+        (tw_db, tw_cur) = Main.startConnection(OUTPUT_FOLDER + "tw.idx")
 
-		firstIndex = tweetsCursor.first()
-		firstTweet = firstIndex[1]
-		firstTweetLocation = firstIndex[0]
-		print(firstTweet.decode("utf-8"))
-		print(firstTweetLocation.decode("utf-8"))
-		date = datesDatabase.get(firstTweetLocation)
-		print(date[0].decode("utf-8"))
+        (terms, dates) = Main.getInput()
 
-		tweetsCursor.close()
-		tweetsDatabase.close()
+        for i in terms:
+            if i.field == "text":
+                key = "t-" + i.value.lower()
+
+            if i.field == "name":
+                key = "n-" + i.value.lower()
+            
+            if i.field == "location":
+                key = "l-" + i.value.lower()
+                
+            print(key)
+
+        Main.closeConnection(te_db, te_cur)
+        Main.closeConnection(da_db, da_cur)
+        Main.closeConnection(tw_db, tw_cur)
 
 if __name__ == "__main__":
-	Main.main()
+    Main.main()
