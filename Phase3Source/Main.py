@@ -25,8 +25,36 @@ class Main:
         return query.terms, query.dates
 
     @staticmethod
+    def searchTweets(ids, database):
+        for i in ids:
+            print(str.encode(i))
+            val = database.get(str.encode(i.strip()))
+            print(val)            
+
+    @staticmethod
+    def searchTerms(key, cur):
+        ids = []
+        iter = cur.first()
+
+        while iter:
+            if iter[0].decode("utf-8") == key:
+                break
+            iter = cur.next()
+        
+        while iter[0].decode("utf-8") == key:
+            # print(iter[1].decode("utf-8"))
+            ids.append(iter[1].decode("utf-8"))
+            iter = cur.next()
+
+        return ids  
+
+    @staticmethod
     def main():
-        """Run the program"""
+        """ Run the program
+            tw.idx -- hash
+            da.idx -- B-tree
+            te.idx -- B-tree """
+
         (te_db, te_cur) = Main.startConnection(OUTPUT_FOLDER + "te.idx")
         (da_db, da_cur) = Main.startConnection(OUTPUT_FOLDER + "da.idx")
         (tw_db, tw_cur) = Main.startConnection(OUTPUT_FOLDER + "tw.idx")
@@ -44,12 +72,16 @@ class Main:
                 key = "l-" + i.value.lower()
                 
             print(key)
+        
+        ids = Main.searchTerms(key, te_cur)
+        Main.searchTweets(ids, tw_db)
 
-            firstIndex = twe_cur.first()
-            firstTweet = firstIndex[1]
-            firstTweetLocation = firstIndex[0]
-            print(firstTweet.decode("utf-8"))
-            print(firstTweetLocation.decode("utf-8"))
+            # firstIndex = te_cur.first()
+            # firstTweet = firstIndex[1]
+            # firstTweetLocation = firstIndex[0]
+            # print(firstTweet.decode("utf-8"))
+            # print(firstTweetLocation.decode("utf-8"))
+            
 
         Main.closeConnection(te_db, te_cur)
         Main.closeConnection(da_db, da_cur)
