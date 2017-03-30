@@ -25,6 +25,5 @@ if __name__ == "__main__":
 	query = Interface.readAndParse()
 
 	if query is not None:
-		pprint([str(component) for component in query.exactTerms])
-		pprint([str(component) for component in query.startsWith])
+		pprint([str(component) for component in query.terms])
 		pprint([str(component) for component in query.dates])
