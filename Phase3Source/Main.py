@@ -26,10 +26,11 @@ class Main:
 
     @staticmethod
     def searchTweets(ids, database):
+        """search for tweets from a list of tweet ids"""
+        tweets = []
         for i in ids:
-            print(str.encode(i))
-            val = database.get(str.encode(i.strip()))
-            print(val)            
+            tweets.append(database.get(str.encode(i.strip()))
+        return tweets          
 
     @staticmethod
     def searchTerms(key, cur):
@@ -74,7 +75,7 @@ class Main:
             print(key)
         
         ids = Main.searchTerms(key, te_cur)
-        Main.searchTweets(ids, tw_db)
+        tweets = Main.searchTweets(ids, tw_db)
 
             # firstIndex = te_cur.first()
             # firstTweet = firstIndex[1]
