@@ -36,6 +36,7 @@ class Main:
 
     @staticmethod
     def searchTerms(key, cur):
+        """search for eact terms"""
         ids = []
         iter = cur.first()
 
@@ -54,6 +55,7 @@ class Main:
 
     @staticmethod
     def searchTermsWC(key, cur):
+        """search for wildcard terms"""
         ids = []
         iter = cur.first()
 
@@ -96,7 +98,7 @@ class Main:
 
         (terms, dates) = Main.getInput()
 
-        for i in terms:
+        if terms != []: for i in terms:
             print(i.isExactMatch)
             if i.field == "text":
                 key = "t-" + i.value
