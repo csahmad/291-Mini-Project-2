@@ -1,3 +1,5 @@
+import xml.etree.ElementTree as ET
+import pprint
 from bsddb3 import db
 from Interface import *
 
@@ -29,7 +31,7 @@ class Main:
         """search for tweets from a list of tweet ids"""
         tweets = []
         for i in ids:
-            tweets.append(database.get(str.encode(i.strip()))
+            tweets.append(database.get(str.encode(i.strip())))
         return tweets          
 
     @staticmethod
@@ -42,12 +44,26 @@ class Main:
                 break
             iter = cur.next()
         
-        while iter[0].decode("utf-8") == key:
-            # print(iter[1].decode("utf-8"))
-            ids.append(iter[1].decode("utf-8"))
-            iter = cur.next()
+        if iter != None:
+            while iter[0].decode("utf-8") == key:
+                # print(iter[1].decode("utf-8"))
+                ids.append(iter[1].decode("utf-8"))
+                iter = cur.next()
 
         return ids  
+
+    @staticmethod
+    def prettyprint(item):
+        root = ET.fromstring(item)
+        for child in root:
+            if child.tag != "user":
+                print(child.tag + ": " + child.text)
+            else:
+                print(child.tag + ": " + child.text)
+                for grandchild in child:
+                    print("  " + grandchild.tag + ": " + grandchild.text)
+        print("------------------------")
+        
 
     @staticmethod
     def main():
@@ -71,19 +87,15 @@ class Main:
             
             if i.field == "location":
                 key = "l-" + i.value.lower()
-                
-            print(key)
+            print("key: " + key)
         
         ids = Main.searchTerms(key, te_cur)
         tweets = Main.searchTweets(ids, tw_db)
+        if tweets != []:
+            for i in tweets:
+                Main.prettyprint(i)
 
-            # firstIndex = te_cur.first()
-            # firstTweet = firstIndex[1]
-            # firstTweetLocation = firstIndex[0]
-            # print(firstTweet.decode("utf-8"))
-            # print(firstTweetLocation.decode("utf-8"))
-            
-
+        ### close connections
         Main.closeConnection(te_db, te_cur)
         Main.closeConnection(da_db, da_cur)
         Main.closeConnection(tw_db, tw_cur)
