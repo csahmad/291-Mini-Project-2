@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import pprint
 from bsddb3 import db
 from Interface import *
+from QueryOperator import *
 
 OUTPUT_FOLDER = "../Output/"
 
@@ -73,6 +74,26 @@ class Main:
         return ids
 
     @staticmethod
+    def searchDates(date, cur, operator):
+        ids = []
+
+        if operator == QueryOperator.GREATER_THAN:
+            iter = cur.set_range(str.encode(date))
+            while iter:
+                ids.append(iter[1].decode("utf-8"))
+                iter = cur.next()
+
+        elif operator == QueryOperator.LESS_THAN:
+            iter = cur.first()
+            while iter[0].decode("utf-8") != date:
+                ids.append(iter[1].decode("utf-8"))
+
+        elif operator == QueryOperator.EQUALS:
+            ids = Main.searchTerms(date, cur)
+
+        return ids
+            
+    @staticmethod
     def prettyprint(item):
         root = ET.fromstring(item)
         for child in root:
@@ -98,25 +119,35 @@ class Main:
 
         (terms, dates) = Main.getInput()
 
-        if terms != []: for i in terms:
-            print(i.isExactMatch)
-            if i.field == "text":
-                key = "t-" + i.value
+        if terms != []: 
+            for i in terms:
+                if i.field == "text":
+                    key = "t-" + i.value
 
-            if i.field == "name":
-                key = "n-" + i.value
-            
-            if i.field == "location":
-                key = "l-" + i.value
-            print("key: " + key)
+                if i.field == "name":
+                    key = "n-" + i.value
+                
+                if i.field == "location":
+                    key = "l-" + i.value
+                print("key: " + key)
 
-            if i.isExactMatch == True: ids = Main.searchTerms(key, te_cur)
-            else: ids = Main.searchTermsWC(key, te_cur)
+                if i.isExactMatch == True: ids = Main.searchTerms(key, te_cur)
+                else: ids = Main.searchTermsWC(key, te_cur)
 
-            tweets = Main.searchTweets(ids, tw_db)
-            if tweets != []:
-                for i in tweets:
-                    Main.prettyprint(i)
+                tweets = Main.searchTweets(ids, tw_db)
+                if tweets != []:
+                    for i in tweets:
+                        Main.prettyprint(i)
+
+        if dates != []:
+            for i in dates:
+                print(i.operator)
+                ids = Main.searchDates(i.value, da_cur, i.operator)
+
+                tweets = Main.searchTweets(ids, tw_db)
+                if tweets != []:
+                    for i in tweets:
+                        Main.prettyprint(i)
 
         ### close connections
         Main.closeConnection(te_db, te_cur)
