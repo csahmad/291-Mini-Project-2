@@ -76,132 +76,113 @@ class TestQueryParser(unittest.TestCase):
 
 	def test_addComponent(self):
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 		componentString = "text:hey"
-		QueryParser._addComponent(componentString, exactTerms, startsWith,
-			dates)
-		self.assertEqual(exactTerms,
-			[QueryComponent("hey", QueryOperator.EQUALS)])
-		self.assertEqual(startsWith, [])
+		QueryParser._addComponent(componentString, terms, dates)
+		self.assertEqual(terms,
+			[QueryComponent("text", "hey", QueryOperator.EQUALS)])
 		self.assertEqual(dates, [])
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 		componentString = "text:hey%"
-		QueryParser._addComponent(componentString, exactTerms, startsWith,
-			dates)
-		self.assertEqual(exactTerms, [])
-		self.assertEqual(startsWith,
-			[QueryComponent("hey", QueryOperator.EQUALS)])
+		QueryParser._addComponent(componentString, terms, dates)
+		self.assertEqual(terms,
+			[QueryComponent("text", "hey", QueryOperator.EQUALS, False)])
 		self.assertEqual(dates, [])
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 		componentString = "date:2011/01/21"
-		QueryParser._addComponent(componentString, exactTerms, startsWith,
-			dates)
-		self.assertEqual(exactTerms, [])
-		self.assertEqual(startsWith, [])
+		QueryParser._addComponent(componentString, terms, dates)
+		self.assertEqual(terms, [])
 		self.assertEqual(dates,
-			[QueryComponent("2011/01/21", QueryOperator.EQUALS)])
+			[QueryComponent("date", "2011/01/21", QueryOperator.EQUALS)])
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 		componentString = "date>2011/01/21"
-		QueryParser._addComponent(componentString, exactTerms, startsWith,
-			dates)
-		self.assertEqual(exactTerms, [])
-		self.assertEqual(startsWith, [])
+		QueryParser._addComponent(componentString, terms, dates)
+		self.assertEqual(terms, [])
 		self.assertEqual(dates,
-			[QueryComponent("2011/01/21", QueryOperator.GREATER_THAN)])
+			[QueryComponent("date", "2011/01/21", QueryOperator.GREATER_THAN)])
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 		componentString = "date<2011/01/21"
-		QueryParser._addComponent(componentString, exactTerms, startsWith,
-			dates)
-		self.assertEqual(exactTerms, [])
-		self.assertEqual(startsWith, [])
+		QueryParser._addComponent(componentString, terms, dates)
+		self.assertEqual(terms, [])
 		self.assertEqual(dates,
-			[QueryComponent("2011/01/21", QueryOperator.LESS_THAN)])
+			[QueryComponent("date", "2011/01/21", QueryOperator.LESS_THAN)])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("text=hey", [], [], [])
+			QueryParser._addComponent("text=hey", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("date=2011/01/21", [], [], [])
+			QueryParser._addComponent("date=2011/01/21", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("date2011/01/21", [], [], [])
+			QueryParser._addComponent("date2011/01/21", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("date", [], [], [])
+			QueryParser._addComponent("date", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("2011/01/21", [], [], [])
+			QueryParser._addComponent("2011/01/21", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("text", [], [], [])
+			QueryParser._addComponent("text", [], [])
 
 		with self.assertRaises(ValueError):
-			QueryParser._addComponent("hey", [], [], [])
+			QueryParser._addComponent("hey", [], [])
 
 	def test_eq(self):
 
 		a = Query(
 			[],
-			[],
 			[])
 		b = Query(
-			[],
 			[],
 			[])
 		self.assertEqual(a, b)
 
 		a = Query(
 			[],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		b = Query(
 			[],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		self.assertEqual(a, b)
 
 		a = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("a", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "a", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		b = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("a", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "a", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		self.assertEqual(a, b)
 
 		a = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("a", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.LESS_THAN)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "a", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.LESS_THAN)])
 		b = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("a", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "a", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		self.assertNotEqual(a, b)
 
 		a = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("abc", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "abc", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		b = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("a", QueryOperator.LESS_THAN)],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS),
+				QueryComponent("text", "a", QueryOperator.LESS_THAN, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		self.assertNotEqual(a, b)
 
 	def test_parse(self):
@@ -209,16 +190,14 @@ class TestQueryParser(unittest.TestCase):
 		string = "text:hey"
 		result = QueryParser.parse(string)
 		expected = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[],
+			[QueryComponent("text", "hey", QueryOperator.EQUALS)],
 			[])
 		self.assertEqual(result, expected)
 
 		string = "text:hey%"
 		result = QueryParser.parse(string)
 		expected = Query(
-			[],
-			[QueryComponent("hey", QueryOperator.EQUALS)],
+			[QueryComponent("text", "hey", QueryOperator.EQUALS, False)],
 			[])
 		self.assertEqual(result, expected)
 
@@ -226,38 +205,33 @@ class TestQueryParser(unittest.TestCase):
 		result = QueryParser.parse(string)
 		expected = Query(
 			[],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.EQUALS)])
+			[QueryComponent("date", "2011/02/21", QueryOperator.EQUALS)])
 		self.assertEqual(result, expected)
 
 		string = "date<2011/02/21"
 		result = QueryParser.parse(string)
 		expected = Query(
 			[],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.LESS_THAN)])
+			[QueryComponent("date", "2011/02/21", QueryOperator.LESS_THAN)])
 		self.assertEqual(result, expected)
 
 		string = "date>2011/02/21"
 		result = QueryParser.parse(string)
 		expected = Query(
 			[],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.GREATER_THAN)])
+			[QueryComponent("date", "2011/02/21", QueryOperator.GREATER_THAN)])
 
 		string = "text:hey date>2011/02/21"
 		result = QueryParser.parse(string)
 		expected = Query(
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[],
-			[QueryComponent("2011/02/21", QueryOperator.GREATER_THAN)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.GREATER_THAN)])
 
 		string = "text:hey% date>2011/02/21"
 		result = QueryParser.parse(string)
 		expected = Query(
-			[],
-			[QueryComponent("hey", QueryOperator.EQUALS)],
-			[QueryComponent("2011/02/21", QueryOperator.GREATER_THAN)])
+			[QueryComponent("text", "hey", QueryOperator.EQUALS, False)],
+			[QueryComponent("date", "2011/02/21", QueryOperator.GREATER_THAN)])
 
 		with self.assertRaises(ValueError):
 			QueryParser.parse("")

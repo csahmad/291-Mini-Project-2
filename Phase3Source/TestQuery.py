@@ -8,50 +8,43 @@ class TestQuery(unittest.TestCase):
 
 	def test_init(self):
 
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
-		query = Query(exactTerms, startsWith, dates)
-		self.assertEqual(query.exactTerms, exactTerms)
-		self.assertEqual(query.startsWith, startsWith)
+		query = Query(terms, dates)
+		self.assertEqual(query.terms, terms)
 		self.assertEqual(query.dates, dates)
 
-		exactTerms = [QueryComponent("german", QueryOperator.EQUALS),
-			QueryComponent("german", QueryOperator.LESS_THAN)]
-		startsWith = []
+		terms = [QueryComponent("text", "german", QueryOperator.EQUALS),
+			QueryComponent("text", "german", QueryOperator.LESS_THAN)]
 		dates = []
-		query = Query(exactTerms, startsWith, dates)
-		self.assertEqual(query.exactTerms, exactTerms)
-		self.assertEqual(query.startsWith, startsWith)
+		query = Query(terms, dates)
+		self.assertEqual(query.terms, terms)
 		self.assertEqual(query.dates, dates)
 
-		exactTerms = []
-		startsWith = [QueryComponent("german", QueryOperator.EQUALS),
-			QueryComponent("german", QueryOperator.GREATER_THAN)]
+		terms = [QueryComponent("text", "german", QueryOperator.EQUALS, False),
+			QueryComponent("text", "german", QueryOperator.GREATER_THAN,
+				False)]
 		dates = []
-		query = Query(exactTerms, startsWith, dates)
-		self.assertEqual(query.exactTerms, exactTerms)
-		self.assertEqual(query.startsWith, startsWith)
+		query = Query(terms, dates)
+		self.assertEqual(query.terms, terms)
 		self.assertEqual(query.dates, dates)
 
-		exactTerms = []
-		startsWith = []
-		dates = [QueryComponent("2011/01/01", QueryOperator.LESS_THAN),
-			QueryComponent("2012/02/01", QueryOperator.GREATER_THAN)]
-		query = Query(exactTerms, startsWith, dates)
-		self.assertEqual(query.exactTerms, exactTerms)
-		self.assertEqual(query.startsWith, startsWith)
+		terms = []
+		dates = [QueryComponent("date", "2011/01/01", QueryOperator.LESS_THAN),
+			QueryComponent("date", "2012/02/01", QueryOperator.GREATER_THAN)]
+		query = Query(terms, dates)
+		self.assertEqual(query.terms, terms)
 		self.assertEqual(query.dates, dates)
 
-		exactTerms = [QueryComponent("german", QueryOperator.EQUALS),
-			QueryComponent("german", QueryOperator.GREATER_THAN)]
-		startsWith = [QueryComponent("german", QueryOperator.EQUALS),
-			QueryComponent("german", QueryOperator.GREATER_THAN)]
-		dates = [QueryComponent("2011/01/01", QueryOperator.LESS_THAN),
-			QueryComponent("2012/02/01", QueryOperator.GREATER_THAN)]
-		query = Query(exactTerms, startsWith, dates)
-		self.assertEqual(query.exactTerms, exactTerms)
-		self.assertEqual(query.startsWith, startsWith)
+		terms = [QueryComponent("text", "german", QueryOperator.EQUALS),
+			QueryComponent("text", "german", QueryOperator.GREATER_THAN),
+			QueryComponent("text", "german", QueryOperator.EQUALS, False),
+			QueryComponent("text", "german", QueryOperator.GREATER_THAN,
+				False)]
+		dates = [QueryComponent("date", "2011/01/01", QueryOperator.LESS_THAN),
+			QueryComponent("date", "2012/02/01", QueryOperator.GREATER_THAN)]
+		query = Query(terms, dates)
+		self.assertEqual(query.terms, terms)
 		self.assertEqual(query.dates, dates)
 
 if __name__ == '__main__':

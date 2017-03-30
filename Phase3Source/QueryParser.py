@@ -18,7 +18,7 @@ class QueryParser:
 
 	_OPERATOR = "|".join(_OPERATORS)
 
-	_TERM = "text"
+	_TERMS = ["text", "name", "location"]
 	_DATE = "date"
 
 	_WILDCARD = "%"
@@ -43,20 +43,19 @@ class QueryParser:
 			raise ValueError("Query cannot be empty.")
 
 		componentStrings = re.split(QueryParser._SEPARATOR, queryString)
-		exactTerms = []
-		startsWith = []
+		terms = []
 		dates = []
 
 		for string in componentStrings:
-			QueryParser._addComponent(string, exactTerms, startsWith, dates)
+			QueryParser._addComponent(string, terms, dates)
 
-		return Query(exactTerms, startsWith, dates)
+		return Query(terms, dates)
 
 	@staticmethod
-	def _addComponent(componentString, exactTerms, startsWith, dates):
+	def _addComponent(componentString, terms, dates):
 		"""
 		Add a QueryComponent (parsed from componentString) to the appropriate
-		list (exactTerms, startsWith, or dates)
+		list (terms or dates)
 		"""
 
 		match = re.search(QueryParser._OPERATOR, componentString)
@@ -82,18 +81,18 @@ class QueryParser:
 		else:
 			raise RuntimeError("I should not be here.")
 
-		if kind == QueryParser._TERM:
+		if kind in QueryParser._TERMS:
 
 			if QueryParser._hasWildcard(value):
 				value = QueryParser._removeWildcard(value)
-				startsWith.append(QueryComponent(value, operator))
+				terms.append(QueryComponent(kind, value, operator, False))
 
 			else:
-				exactTerms.append(QueryComponent(value, operator))
+				terms.append(QueryComponent(kind, value, operator))
 
 		elif kind == QueryParser._DATE:
 			QueryParser._validateDate(value)
-			dates.append(QueryComponent(value, operator))
+			dates.append(QueryComponent(kind, value, operator))
 
 		else:
 			raise ValueError('"{0}" is not valid.'.format(kind))
