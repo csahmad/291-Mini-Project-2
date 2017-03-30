@@ -50,18 +50,36 @@ class Main:
                 ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()
 
-        return ids  
+        return ids
+
+    @staticmethod
+    def searchTermsWC(key, cur):
+        ids = []
+        iter = cur.first()
+
+        while iter:
+            if iter[0].decode("utf-8").startswith(key):
+                break
+            iter = cur.next()
+        
+        if iter != None:
+            while iter[0].decode("utf-8").startswith(key):
+                # print(iter[1].decode("utf-8"))
+                ids.append(iter[1].decode("utf-8"))
+                iter = cur.next()
+
+        return ids
 
     @staticmethod
     def prettyprint(item):
         root = ET.fromstring(item)
         for child in root:
             if child.tag != "user":
-                print(child.tag + ": " + child.text)
+                if child.text != None: print(child.tag + ": " + child.text)
             else:
                 print(child.tag + ": " + child.text)
                 for grandchild in child:
-                    print("  " + grandchild.tag + ": " + grandchild.text)
+                    if grandchild.text != None: print("  " + grandchild.tag + ": " + grandchild.text)
         print("------------------------")
         
 
@@ -79,21 +97,24 @@ class Main:
         (terms, dates) = Main.getInput()
 
         for i in terms:
+            print(i.isExactMatch)
             if i.field == "text":
-                key = "t-" + i.value.lower()
+                key = "t-" + i.value
 
             if i.field == "name":
-                key = "n-" + i.value.lower()
+                key = "n-" + i.value
             
             if i.field == "location":
-                key = "l-" + i.value.lower()
+                key = "l-" + i.value
             print("key: " + key)
-        
-        ids = Main.searchTerms(key, te_cur)
-        tweets = Main.searchTweets(ids, tw_db)
-        if tweets != []:
-            for i in tweets:
-                Main.prettyprint(i)
+
+            if i.isExactMatch == True: ids = Main.searchTerms(key, te_cur)
+            else: ids = Main.searchTermsWC(key, te_cur)
+
+            tweets = Main.searchTweets(ids, tw_db)
+            if tweets != []:
+                for i in tweets:
+                    Main.prettyprint(i)
 
         ### close connections
         Main.closeConnection(te_db, te_cur)
