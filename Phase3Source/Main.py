@@ -152,9 +152,6 @@ class Main:
                 ids = Main.searchDates(i.value, da_cur, i.operator)
                 tweets = Main.searchTweets(ids, tw_db)
                 allTweets.append(set(tweets))
-                # if tweets != []:
-                #     for i in tweets:
-                #         Main.prettyprint(i)
         
         finalSet = allTweets[0]
         for i in range(len(allTweets)-1):
@@ -162,8 +159,6 @@ class Main:
 
         for i in finalSet:
             Main.prettyprint(i)
-
-        # set1.intersection(set2)
 
         ### close connections
         Main.closeConnection(te_db, te_cur)
