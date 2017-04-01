@@ -47,8 +47,10 @@ class Main:
             iter = cur.next()
         
         if iter != None:
-            while iter[0].decode("utf-8") == key:
-                # print(iter[1].decode("utf-8"))
+            print(iter)
+            while iter:
+                if iter[0].decode("utf-8") != key:
+                    break
                 ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()
 
@@ -78,16 +80,20 @@ class Main:
 
         if operator == QueryOperator.GREATER_THAN:
             iter = cur.set_range(str.encode(date))
+            bound = cur.set_range(str.encode(date))
             while iter:
-                ids.append(iter[1].decode("utf-8"))
+                if iter[0].decode("utf-8") != bound[0].decode("utf-8"):
+                    ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()
 
         elif operator == QueryOperator.LESS_THAN:
-            bound = cur.set_range(str.encode(date))[0]
+            bound = cur.set_range(str.encode(date))
+            print("bound:")
+            print(bound)
             iter = cur.first()
            
             while iter:
-                if iter[0] == bound:
+                if iter[0] == bound[0]:
                     break
                 ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()
@@ -120,6 +126,8 @@ class Main:
 
         (terms, dates) = Main.getInput()
 
+        allTweets = []
+
         if terms != []: 
             for i in terms:
                 if i.field == "text":
@@ -136,18 +144,26 @@ class Main:
                 else: ids = Main.searchTermsWC(key, te_cur)
 
                 tweets = Main.searchTweets(ids, tw_db)
-                if tweets != []:
-                    for i in tweets:
-                        Main.prettyprint(i)
+                allTweets.append(set(tweets))
 
         if dates != []:
             for i in dates:
                 print(i.operator)
                 ids = Main.searchDates(i.value, da_cur, i.operator)
                 tweets = Main.searchTweets(ids, tw_db)
-                if tweets != []:
-                    for i in tweets:
-                        Main.prettyprint(i)
+                allTweets.append(set(tweets))
+                # if tweets != []:
+                #     for i in tweets:
+                #         Main.prettyprint(i)
+        
+        finalSet = allTweets[0]
+        for i in range(len(allTweets)-1):
+            finalSet = finalSet.intersection(allTweets[i+1])
+
+        for i in finalSet:
+            Main.prettyprint(i)
+
+        # set1.intersection(set2)
 
         ### close connections
         Main.closeConnection(te_db, te_cur)
