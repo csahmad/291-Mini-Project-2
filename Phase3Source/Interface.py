@@ -3,7 +3,7 @@ from QueryParser import QueryParser
 class Interface:
 	"""The terminal interface"""
 
-	_PROMPT = "Query:"
+	_PROMPT = "Query: "
 
 	@staticmethod
 	def readAndParse():
