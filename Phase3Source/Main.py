@@ -4,7 +4,7 @@ from Interface import Interface
 from SearchDates import SearchDates
 from SearchTerms import SearchTerms
 from SearchTweets import SearchTweets
-from PrintRecords import PrintRecords
+from PrintRecords import PrintTweets
 
 OUTPUT_FOLDER = "../Output/"
 
@@ -83,7 +83,8 @@ class Main:
             finalSet = finalSet.intersection(allTweets[i+1])
 
         for i in finalSet:
-            PrintRecords.prettyprint(i)
+            PrintTweets.prettyprint(i)
+            print("")
 
         """ close connections """
         Main.closeConnection(te_db, te_cur)
