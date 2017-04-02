@@ -12,13 +12,7 @@ class Interface:
 		"""
 		Prompt the user for a query and return the parsed query as a Query
 		"""
-
-		try:
-			return QueryParser.parse(input(Interface._PROMPT))
-
-		except ValueError as e:
-			print(e)
-			return None
+		return QueryParser.parse(input(Interface._PROMPT))
 
 if __name__ == "__main__":
 

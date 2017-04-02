@@ -47,7 +47,6 @@ class Main:
             iter = cur.next()
         
         if iter != None:
-            print(iter)
             while iter:
                 if iter[0].decode("utf-8") != key:
                     break
@@ -88,8 +87,6 @@ class Main:
 
         elif operator == QueryOperator.LESS_THAN:
             bound = cur.set_range(str.encode(date))
-            print("bound:")
-            print(bound)
             iter = cur.first()
            
             while iter:
@@ -166,4 +163,8 @@ class Main:
         Main.closeConnection(tw_db, tw_cur)
 
 if __name__ == "__main__":
-    Main.main()
+    while True:
+        try:
+            Main.main()
+        except ValueError as e:
+            print(e)
