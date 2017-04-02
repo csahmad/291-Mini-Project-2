@@ -1,4 +1,5 @@
 from QueryParser import QueryParser
+import sys
 
 class Interface:
 	"""The terminal interface"""
@@ -10,4 +11,10 @@ class Interface:
 		"""
 		Prompt the user for a query and return the parsed query as a Query
 		"""
-		return QueryParser.parse(input(Interface._PROMPT))
+		print("\ntype 'exit' to leave program")
+		inputString = input(Interface._PROMPT)
+		if inputString.lower().strip() == "exit":
+    			print("BYE!\n")
+    			sys.exit(0)
+		else:
+    			return QueryParser.parse(inputString)

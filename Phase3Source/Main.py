@@ -1,4 +1,3 @@
-import sys
 from bsddb3 import db
 from Interface import Interface
 from SearchDates import SearchDates
@@ -97,6 +96,3 @@ if __name__ == "__main__":
             Main.main()
         except ValueError as e:
             print(e)
-        except KeyboardInterrupt:
-            print('\n\nBYE!\n')
-            sys.exit(0)
