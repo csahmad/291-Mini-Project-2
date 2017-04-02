@@ -4,15 +4,10 @@ MAIN=Main
 PYTHON=python3
 CLEAN="true"
 
-# If no arguments given, pass $MAIN to $PYTHON
-if [ $# -eq 0 ]
-then
-    $PYTHON $MAIN.py
+echo "Type in the xml file (Phase 1)"
+read file 
 
-# Otherwise, pass the given arguments to $PYTHON
-else
-    $PYTHON $@
-fi
+cat $file | $PYTHON $MAIN.py
 
 # If we should clean...
 if [ $CLEAN = "true" ]
