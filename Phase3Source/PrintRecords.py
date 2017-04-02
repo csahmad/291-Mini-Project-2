@@ -1,14 +1,13 @@
 import xml.etree.ElementTree as ET
 
-
 class PrintTweets:
 
     @staticmethod
     def extractTweet(item):
-        """
-            tweet: id, created_at, text, retweet_count, user 
-            user: name, location, description, url
-        """
+        """ extract tweets and user info from tweet record (xml)
+            values:
+                tweet: id, created_at, text, retweet_count, user 
+                user: name, location, description, url """
 
         root = ET.fromstring(item)
         tweet = {}
@@ -24,6 +23,8 @@ class PrintTweets:
         
     @staticmethod
     def prettyprint(item):
+        """ this project's version of pprint """
+
         (tweet, user) = PrintTweets.extractTweet(item)    
         border = "--------------------------------------"
         print(border)
