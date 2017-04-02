@@ -70,6 +70,9 @@ class QueryParser:
 			kind = componentString[:match.start()].lower()
 			value = componentString[match.end():].lower()
 
+			if value == "":
+    				raise ValueError('value not given')
+
 			if operatorString == QueryParser._EQUALS:
 				operator = QueryOperator.EQUALS
 
