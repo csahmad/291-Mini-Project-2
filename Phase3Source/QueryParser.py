@@ -18,7 +18,7 @@ class QueryParser:
 
 	_OPERATOR = "|".join(_OPERATORS)
 
-	_TERMS = ["text", "name", "location"]
+	_TERMS = ["text", "name", "location", "all"]
 	_DATE = "date"
 
 	_WILDCARD = "%"
@@ -61,25 +61,23 @@ class QueryParser:
 		match = re.search(QueryParser._OPERATOR, componentString)
 
 		if match is None:
-
-			raise ValueError('Missing operator ({0}) in "{1}"'.format(
-				", ".join(QueryParser._OPERATORS), componentString))
-
-		operatorString = match.group()
-		kind = componentString[:match.start()].lower()
-		value = componentString[match.end():].lower()
-
-		if operatorString == QueryParser._EQUALS:
-			operator = QueryOperator.EQUALS
-
-		elif operatorString == QueryParser._LESS_THAN:
-			operator = QueryOperator.LESS_THAN
-
-		elif operatorString == QueryParser._GREATER_THAN:
-			operator = QueryOperator.GREATER_THAN
+			value = componentString
+			operator = None
+			kind = "all"
 
 		else:
-			raise RuntimeError("I should not be here.")
+			operatorString = match.group()
+			kind = componentString[:match.start()].lower()
+			value = componentString[match.end():].lower()
+
+			if operatorString == QueryParser._EQUALS:
+				operator = QueryOperator.EQUALS
+
+			elif operatorString == QueryParser._LESS_THAN:
+				operator = QueryOperator.LESS_THAN
+
+			elif operatorString == QueryParser._GREATER_THAN:
+				operator = QueryOperator.GREATER_THAN
 
 		if kind in QueryParser._TERMS:
 

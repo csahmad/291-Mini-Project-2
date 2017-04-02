@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-import pprint
+import sys
 from bsddb3 import db
 from Interface import *
 from QueryOperator import *
@@ -36,40 +36,68 @@ class Main:
         return tweets          
 
     @staticmethod
-    def searchTerms(key, cur):
+    def searchTerms(key, cur, isCheckAll):
         """search for eact terms"""
         ids = []
         iter = cur.first()
 
-        while iter:
-            if iter[0].decode("utf-8") == key:
-                break
-            iter = cur.next()
-        
-        if iter != None:
+        if isCheckAll == False:
             while iter:
-                if iter[0].decode("utf-8") != key:
+                if iter[0].decode("utf-8") == key:
                     break
-                ids.append(iter[1].decode("utf-8"))
+                iter = cur.next()
+            
+            if iter != None:
+                while iter:
+                    if iter[0].decode("utf-8") != key:
+                        break
+                    ids.append(iter[1].decode("utf-8"))
+                    iter = cur.next()
+        else:
+            while iter:
+                if iter[0].decode("utf-8").endswith(key, 2, len(iter[0].decode("utf-8"))):
+                    break
                 iter = cur.next()
 
+            if iter != None:
+                while iter:
+                    if iter[0].decode("utf-8").endswith(key, 2, len(iter[0].decode("utf-8"))) == False:
+                        break
+                    ids.append(iter[1].decode("utf-8"))
+                    iter = cur.next()
+            
         return ids
 
     @staticmethod
-    def searchTermsWC(key, cur):
+    def searchTermsWC(key, cur, isCheckAll):
         """search for wildcard terms"""
         ids = []
         iter = cur.first()
 
-        while iter:
-            if iter[0].decode("utf-8").startswith(key):
-                break
-            iter = cur.next()
-        
-        if iter != None:
-            while iter[0].decode("utf-8").startswith(key):
-                ids.append(iter[1].decode("utf-8"))
+        if isCheckAll == False:
+            while iter:
+                if iter[0].decode("utf-8").startswith(key):
+                    break
                 iter = cur.next()
+            
+            if iter != None:
+                while iter[0].decode("utf-8").startswith(key):
+                    ids.append(iter[1].decode("utf-8"))
+                    iter = cur.next()
+
+        else:
+            while iter:
+                if iter[0].decode("utf-8").endswith(key, 2, len(key)+2):
+                    break
+                iter = cur.next()
+
+            if iter != None:
+                while iter:
+                    if iter[0].decode("utf-8").endswith(key, 2, len(key)+2) == False:
+                        break
+                    ids.append(iter[1].decode("utf-8"))
+                    iter = cur.next()
+                
 
         return ids
 
@@ -96,13 +124,14 @@ class Main:
                 iter = cur.next()
 
         elif operator == QueryOperator.EQUALS:
-            ids = Main.searchTerms(date, cur)
+            ids = Main.searchTerms(date, cur, False)
 
         return ids
             
     @staticmethod
     def prettyprint(item):
         root = ET.fromstring(item)
+        print("")
         for child in root:
             if child.tag != "user":
                 if child.text != None: print(child.tag + ": " + child.text)
@@ -110,7 +139,7 @@ class Main:
                 print(child.tag + ": " + child.text)
                 for grandchild in child:
                     if grandchild.text != None: print("  " + grandchild.tag + ": " + grandchild.text)
-        print("------------------------")
+        print("------------------------\n")
         
 
     @staticmethod
@@ -129,16 +158,21 @@ class Main:
             for i in terms:
                 if i.field == "text":
                     key = "t-" + i.value
+                    isCheckAll = False
 
                 if i.field == "name":
                     key = "n-" + i.value
+                    isCheckAll = False
                 
                 if i.field == "location":
                     key = "l-" + i.value
-                print("key: " + key)
-
-                if i.isExactMatch == True: ids = Main.searchTerms(key, te_cur)
-                else: ids = Main.searchTermsWC(key, te_cur)
+                    isCheckAll = False
+                else:
+                    key = i.value
+                    isCheckAll = True
+                
+                if i.isExactMatch == True: ids = Main.searchTerms(key, te_cur, isCheckAll)
+                else: ids = Main.searchTermsWC(key, te_cur, isCheckAll)
 
                 tweets = Main.searchTweets(ids, tw_db)
                 allTweets.append(set(tweets))
@@ -168,3 +202,6 @@ if __name__ == "__main__":
             Main.main()
         except ValueError as e:
             print(e)
+        except KeyboardInterrupt:
+            print('\n\nBYE!\n')
+            sys.exit(0)
