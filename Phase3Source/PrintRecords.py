@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import textwrap
 
 class PrintTweets:
 
@@ -26,12 +27,14 @@ class PrintTweets:
         """ this project's version of pprint """
 
         (tweet, user) = PrintTweets.extractTweet(item)    
-        border = "--------------------------------------"
+        border = "    --------------------------------------"
+        dedented_text = textwrap.dedent(tweet["text"])
+        _dedented_text = textwrap.fill(dedented_text, initial_indent='', subsequent_indent='    ')
         print(border)
-        print("{0}".format(tweet["text"]))
-        print(" ---\n tweet id: {0}\n date    : {1}\n retweets: {2}" \
+        print("    {0}".format(_dedented_text))
+        print("\t---\n\ttweet id: {0}\n\tdate    : {1}\n\tretweets: {2}" \
                 .format(tweet["id"], tweet["created_at"], tweet["retweet_count"]))
-        print(" ---\n name: {0}\n loc : {1}\n des : {2}\n url : {3}" \
+        print("\t---\n\tname: {0}\n\tloc : {1}\n\tdes : {2}\n\turl : {3}" \
                 .format(user["name"], user["location"], user["description"], user["url"]))
 
         
