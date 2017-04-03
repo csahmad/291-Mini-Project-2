@@ -2,6 +2,8 @@
 
 OUTPUT_FOLDER=../Output
 
+echo "PHASE 2"
+
 rm $OUTPUT_FOLDER/*.idx
 
 sort -u "$OUTPUT_FOLDER/tweets.txt" | \
