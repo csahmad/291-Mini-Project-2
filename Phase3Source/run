@@ -4,6 +4,8 @@ MAIN=Main
 PYTHON=python3
 CLEAN="true"
 
+echo "PHASE 3"
+
 # If no arguments given, pass $MAIN to $PYTHON
 if [ $# -eq 0 ]
 then
