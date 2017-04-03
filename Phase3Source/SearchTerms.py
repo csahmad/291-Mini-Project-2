@@ -44,13 +44,15 @@ class SearchTerms:
         ids = []
         iter = cur.first()
         while iter:
-            if iter[0].decode("utf-8").endswith(key, 2, len(iter[0].decode("utf-8"))):
+            
+            if iter[0].decode("utf-8")[2:] == key:
+                print(iter[0].decode("utf-8"))
                 break
             iter = cur.next()
 
         if iter != None:
             while iter:
-                if iter[0].decode("utf-8").endswith(key, 2, len(iter[0].decode("utf-8"))) == False:
+                if iter[0].decode("utf-8")[2:] != key:
                     break
                 ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()
@@ -81,6 +83,8 @@ class SearchTerms:
         iter = cur.first()
         while iter:
             if iter[0].decode("utf-8").startswith(key):
+                print("****")
+                print(iter[0].decode("utf-8"))
                 break
             iter = cur.next()
         
@@ -99,13 +103,13 @@ class SearchTerms:
         ids = []
         iter = cur.first()
         while iter:
-            if iter[0].decode("utf-8").endswith(key, 2, len(key)+2):
+            if iter[0].decode("utf-8")[2:len(key)+2] == key:
                 break
             iter = cur.next()
 
         if iter != None:
             while iter:
-                if iter[0].decode("utf-8").endswith(key, 2, len(key)+2) == False:
+                if iter[0].decode("utf-8")[2:len(key)+2] != key:
                     break
                 ids.append(iter[1].decode("utf-8"))
                 iter = cur.next()

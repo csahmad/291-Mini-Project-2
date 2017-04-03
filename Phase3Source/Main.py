@@ -54,11 +54,11 @@ class Main:
                     key = "t-" + i.value
                     isCheckAll = False
 
-                if i.field == "name":
+                elif i.field == "name":
                     key = "n-" + i.value
                     isCheckAll = False
                 
-                if i.field == "location":
+                elif i.field == "location":
                     key = "l-" + i.value
                     isCheckAll = False
                 else:
