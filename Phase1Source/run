@@ -3,11 +3,17 @@
 MAIN=Main
 PYTHON=python3
 CLEAN="true"
+OUTPUT_FOLDER=../Output
 
-echo "Type in the xml file (Phase 1)"
-read file 
+echo "PHASE 1"
+FILENAME=.
 
-cat $file | $PYTHON $MAIN.py
+while [ ! -f $FILENAME ]; do
+	echo "Type in the xml file"
+	read FILENAME
+done
+
+cat $FILENAME | $PYTHON $MAIN.py
 
 # If we should clean...
 if [ $CLEAN = "true" ]
